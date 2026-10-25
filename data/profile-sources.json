@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "fetchedAt": "2026-10-24T18:38:30Z",
+  "purpose": "Demo personas based on publicly visible professional metadata from the six user-supplied profile URLs.",
+  "disclosure": "These people are not registered ConferenceOS users or confirmed GitHub Universe attendees. Public profile data may be incomplete or stale. Demo interests, recommendations, event participation and graph relationships are synthetic unless separately identified as public professional evidence.",
+  "collectionMethod": "Public web search index and public first-party pages only. No authenticated LinkedIn access or authentication bypass. Direct LinkedIn fetches were attempted twice and returned HTTP 999 or cache-miss errors; indexed public content supplied the professional metadata.",
+  "excludedData": ["personal contact information", "sensitive traits", "private profile content", "precise personal locations"],
+  "profiles": [
+    {
+      "id": "harsh",
+      "name": "Harsh Kadodwala",
+      "profileUrl": "https://www.linkedin.com/in/harsh-kadodwala/",
+      "role": "Multimodal Signal Intelligence Intern",
+      "company": "SoundSafe.ai",
+      "affiliationType": "employment",
+      "city": "Madison",
+      "region": "Wisconsin",
+      "country": "United States",
+      "professionalTopics": ["multimodal signal intelligence", "AI media integrity", "media provenance", "anomaly detection"],
+      "demo": true,
+      "attendanceConfirmed": false,
+      "sourceStatus": "public-indexed",
+      "directProfileAccess": "blocked",
+      "roleVerification": "public-self-report",
+      "hiring": {"status": "not-verified", "currentOpeningsVerified": false, "sourceUrl": null, "note": "No hiring claim is made about this person."},
+      "sources": [
+        {"url": "https://www.linkedin.com/in/harsh-kadodwala/", "kind": "public-profile", "access": "search-index", "crawlRecency": "3 months ago", "summary": "The exact supplied profile is named Harsh Kadodwala, lists Madison, Wisconsin, and shows SoundSafe.ai in its experience. Role details are hidden in the indexed experience section."},
+        {"url": "https://www.linkedin.com/posts/harsh-kadodwala_im-excited-to-share-that-ive-joinedsoundsafeai-activity-7449966104191459328-gToh", "kind": "self-authored-post", "access": "search-index", "crawlRecency": "3 months ago", "summary": "Harsh announces joining SoundSafe.ai as a Multimodal Signal Intelligence Intern. He describes work on AI-generated audio/video detection, media integrity and provenance, and multimodal anomaly detection. This is a public career announcement, not live employment verification."}
+      ]
+    },
+    {
+      "id": "abhinav",
+      "name": "Abhinav Kumar",
+      "profileUrl": "https://www.linkedin.com/in/abhinavkumarr/",
+      "role": "Computer Science student",
+      "company": "University of Wisconsin–Madison",
+      "affiliationType": "education",
+      "city": "Madison",
+      "region": "Wisconsin",
+      "country": "United States",
+      "professionalTopics": ["computer vision", "AI visual search", "software engineering", "data engineering"],
+      "demo": true,
+      "attendanceConfirmed": false,
+      "sourceStatus": "public-indexed",
+      "directProfileAccess": "blocked",
+      "roleVerification": "public-self-report",
+      "hiring": {"status": "not-verified", "currentOpeningsVerified": false, "sourceUrl": null, "note": "No hiring claim is made about this person."},
+      "sources": [
+        {"url": "https://www.linkedin.com/in/abhinavkumarr/", "kind": "public-profile", "access": "search-index", "crawlRecency": "last month", "summary": "The exact profile identifies Abhinav Kumar in Madison and describes UW-Madison Computer Science, class of 2027. Public posts describe a Google software engineering internship on AI Mode Visual Search, computer vision research, and a Python/Postgres/Ollama discovery pipeline. Education is used as the demo affiliation; the Google internship is historical, not asserted to be a current role."}
+      ]
+    },
+    {
+      "id": "aimen",
+      "name": "Aimen Moten",
+      "profileUrl": "https://www.linkedin.com/in/aimen-moten/",
+      "role": "Software Engineer, YouTube",
+      "company": "Google",
+      "affiliationType": "employment",
+      "city": "San Francisco",
+      "region": "California",
+      "country": "United States",
+      "professionalTopics": ["software engineering", "AI prototyping", "technical career development"],
+      "demo": true,
+      "attendanceConfirmed": false,
+      "sourceStatus": "public-indexed",
+      "directProfileAccess": "blocked",
+      "roleVerification": "public-self-report",
+      "hiring": {"status": "not-verified", "currentOpeningsVerified": false, "sourceUrl": null, "note": "No hiring claim is made about this person."},
+      "sources": [
+        {"url": "https://www.linkedin.com/in/aimen-moten/", "kind": "public-profile", "access": "search-index", "crawlRecency": "last month", "summary": "The exact profile identifies Aimen Moten in San Francisco and Google as an employer. A self-authored update says she graduated from DePauw and started as a software engineer at Google on YouTube. Other visible posts discuss AI prototyping and sharing lessons about tech, AI and career growth."}
+      ]
+    },
+    {
+      "id": "gabby",
+      "name": "Gabby Landry",
+      "profileUrl": "https://www.linkedin.com/in/gabby-landry/",
+      "role": "VP of AI",
+      "company": "Mariani Premier Group",
+      "affiliationType": "employment",
+      "city": "San Francisco",
+      "region": "California",
+      "country": "United States",
+      "professionalTopics": ["enterprise AI adoption", "AI prototyping", "change management"],
+      "demo": true,
+      "attendanceConfirmed": false,
+      "sourceStatus": "public-indexed",
+      "directProfileAccess": "blocked",
+      "roleVerification": "public-self-report",
+      "hiring": {"status": "not-verified", "currentOpeningsVerified": false, "sourceUrl": null, "note": "No hiring claim is made about this person."},
+      "sources": [
+        {"url": "https://www.linkedin.com/in/gabby-landry/", "kind": "public-profile", "access": "search-index", "crawlRecency": "2 weeks ago", "summary": "The exact supplied profile identifies Gabby Landry in San Francisco, states VP of AI in its About section, and lists Mariani Premier Group first in experience. Other people named Gabby Landry have different profile URLs and are excluded."},
+        {"url": "https://www.linkedin.com/posts/gabby-landry_i-love-building-ai-within-a-big-non-tech-software-activity-7507924905439510528-WVI5", "kind": "self-authored-post", "access": "search-index", "crawlRecency": "last month", "summary": "Gabby describes building and piloting AI at an established company, learning from employee feedback, and bringing people along through change management. This supports professional subject matter, not a private preference or an event interest declaration."}
+      ]
+    },
+    {
+      "id": "sagar",
+      "name": "Sagar Shah",
+      "profileUrl": "https://www.linkedin.com/in/sagarshahuk/",
+      "role": "Co-founder",
+      "company": "Tano",
+      "affiliationType": "employment",
+      "city": "London",
+      "region": "England",
+      "country": "United Kingdom",
+      "professionalTopics": ["AI agents", "autonomous workflows", "influencer marketing", "startups"],
+      "demo": true,
+      "attendanceConfirmed": false,
+      "sourceStatus": "public-indexed-and-first-party",
+      "directProfileAccess": "blocked",
+      "roleVerification": "public-self-report",
+      "hiring": {"status": "public-post-found", "currentOpeningsVerified": false, "sourceUrl": "https://www.linkedin.com/posts/sagarshahuk_were-hiring-if-you-areknow-anyone-exceptional-activity-7475134156117618688-VpFS", "careersUrl": "https://www.tano.ai/careers", "note": "An indexed self-authored hiring post names two software engineering roles and two influencer executive/manager roles. The current careers-page response did not expose a vacancy list. Show this as a public hiring post; current availability is unverified."},
+      "sources": [
+        {"url": "https://uk.linkedin.com/in/sagarshahuk", "kind": "public-profile", "access": "search-index", "crawlRecency": "3 weeks ago", "summary": "The exact slug identifies Sagar Shah in London, lists Tano, and describes replacing human workflows with autonomous systems. It links to GitHub user sa64r. This is distinct from other Sagar Shah profiles, including an Anthropic employee."},
+        {"url": "https://github.com/sa64r", "kind": "self-authored-professional-site", "access": "direct-public", "crawlRecency": "last week", "summary": "This GitHub profile links back to the supplied LinkedIn slug. Its README states Sagar is a Tano co-founder based in London, building AI agents for marketing. It explicitly lists AI agents, startups and influencer marketing as professional discussion topics."},
+        {"url": "https://www.linkedin.com/posts/sagarshahuk_were-hiring-if-you-areknow-anyone-exceptional-activity-7475134156117618688-VpFS", "kind": "self-authored-post", "access": "search-index", "crawlRecency": "2 months ago", "summary": "A public hiring announcement for Tano describes two software engineers and two influencer executives/managers, with a link to Tano's careers page. Its indexed relative date is insufficient to guarantee roles remain open on the collection date."},
+        {"url": "https://www.tano.ai/careers", "kind": "company-careers-page", "access": "direct-public", "crawlRecency": "2 days ago", "summary": "The careers URL is publicly accessible and has a careers title, but its returned page content is a company overview without a current job list. It does not establish that any named vacancy is still open."}
+      ]
+    },
+    {
+      "id": "vida",
+      "name": "Vida Stanić",
+      "profileUrl": "https://www.linkedin.com/in/vidastanic/",
+      "role": "Founder",
+      "company": "Astute",
+      "affiliationType": "employment",
+      "city": "New York",
+      "region": "New York",
+      "country": "United States",
+      "professionalTopics": ["AI agents", "B2B creator partnerships", "new media", "growth marketing"],
+      "demo": true,
+      "attendanceConfirmed": false,
+      "sourceStatus": "public-indexed-and-first-party",
+      "directProfileAccess": "blocked",
+      "roleVerification": "public-self-report",
+      "hiring": {"status": "not-verified", "currentOpeningsVerified": false, "sourceUrl": null, "note": "No explicit public hiring announcement or current vacancy was verified. Being a founder or mentioning job candidates does not establish hiring."},
+      "sources": [
+        {"url": "https://www.linkedin.com/in/vidastanic/", "kind": "public-profile", "access": "search-index", "crawlRecency": "last month", "summary": "The exact profile identifies Vida Stanić in New York with Astute. Public self-authored posts describe founding Astute and its AI agents for B2B media and creator partnerships. No event attendance or current hiring status is established."},
+        {"url": "https://vidastanic.com/", "kind": "self-authored-professional-site", "access": "direct-public", "crawlRecency": "today", "summary": "Vida's personal site says she started Astute with a technical co-founder after Entrepreneurs First and has been based in New York City since January 2026. The site links back to her LinkedIn profile. Only relevant professional details are retained."}
+      ]
+    }
+  ]
+}

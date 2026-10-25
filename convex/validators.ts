@@ -1,0 +1,10 @@
+import {v} from 'convex/values';
+export const proofValidator=v.object({nodes:v.array(v.object({id:v.string(),kind:v.string(),label:v.string()})),edges:v.array(v.object({id:v.string(),source:v.string(),target:v.string(),kind:v.string()})),traversalNodeIds:v.array(v.string())});
+const legacy={path:v.array(v.string()),pathNodeIds:v.array(v.string()),pathEdgeKinds:v.array(v.string())};
+export const sessionRecommendation=v.object({talkId:v.string(),topicId:v.string(),speakerId:v.string(),proof:proofValidator,...legacy});
+export const personRecommendation=v.object({personId:v.string(),topicId:v.string(),proof:proofValidator,...legacy});
+export const recommendationStatus=v.union(v.literal('idle'),v.literal('loading'),v.literal('ready'),v.literal('error'));
+export const recommendationSource=v.union(v.literal('live'),v.literal('preview'));
+export const recommendationValidator=v.object({revision:v.number(),status:recommendationStatus,source:recommendationSource,talks:v.array(sessionRecommendation),people:v.array(personRecommendation),error:v.union(v.string(),v.null()),updatedAt:v.union(v.number(),v.null())});
+export const presentationStatus=v.union(v.literal('waiting'),v.literal('paired'),v.literal('loading'),v.literal('live'),v.literal('error'),v.literal('expired'),v.literal('revoked'));
+export const desktopPresentationValidator=v.object({status:presentationStatus,expiresAt:v.number(),codeExpiresAt:v.number(),revision:v.union(v.number(),v.null()),proof:v.union(proofValidator,v.null()),updatedAt:v.union(v.number(),v.null())});

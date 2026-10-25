@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "disclosure": "Real public source excerpts for a simulated networking demo. No real attendee relationships, current vacancy availability, or conference attendance asserted.",
+  "posts": [
+    {
+      "id": "1594a1e4ac3e03fa7285",
+      "platform": "x",
+      "url": "https://x.com/sa64r/status/2075134826634486039",
+      "author": "Sagar Shah",
+      "authorSourceId": "sagar-shah",
+      "authorProfileUrl": "https://x.com/sa64r",
+      "publishedAt": "2026-07-09T08:27:51.000Z",
+      "fetchedAt": "2026-10-24T20:51:39.957Z",
+      "excerpt": "Looking for an engineer to join Tano in London. AI-native influencer marketing. Small team, agents in production, brands paying for it. I'm…",
+      "topicSignals": [
+        {
+          "topic": "ai",
+          "basis": "deterministic-keyword-match-not-user-preference"
+        },
+        {
+          "topic": "hiring",
+          "basis": "deterministic-keyword-match-not-user-preference"
+        }
+      ],
+      "kind": "public-hiring-lead",
+      "availability": "unverified",
+      "provider": "brightdata",
+      "datasetId": "gd_lwxkxvnf1cynvib9co",
+      "demoContext": true,
+      "attendanceVerified": false,
+      "conferenceMember": false,
+      "sourcePurpose": "Public hiring lead relevant to a synthetic discussion about AI startup roles. Current vacancy availability is unverified."
+    }
+  ]
+}

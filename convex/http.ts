@@ -1,0 +1,12 @@
+import {httpRouter} from 'convex/server';
+import {auth} from './auth';
+import {upload,media,options} from './captureHttp';
+import {webhook} from './blandHttp';
+const http=httpRouter();
+auth.addHttpRoutes(http);
+http.route({path:'/bland/webhook',method:'POST',handler:webhook});
+http.route({path:'/capture-upload',method:'POST',handler:upload});
+http.route({path:'/capture-upload',method:'OPTIONS',handler:options});
+http.route({path:'/capture-media',method:'GET',handler:media});
+http.route({path:'/capture-media',method:'OPTIONS',handler:options});
+export default http;

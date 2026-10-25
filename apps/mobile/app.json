@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "ConferenceOS",
+    "slug": "conferenceos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#10121c",
+    "scheme": "conferenceos",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.conferenceos.mobile"
+    },
+    "android": {
+      "package": "app.conferenceos.mobile"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Record a short conference capture after everyone has agreed.",
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Scan a ConferenceOS connection invitation.",
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose photos to include in your private conference capture.",
+          "cameraPermission": "Take a photo for your private conference capture."
+        }
+      ]
+    ]
+  }
+}

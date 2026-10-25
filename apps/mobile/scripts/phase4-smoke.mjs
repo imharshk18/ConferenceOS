@@ -1,0 +1,121 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { mkdir, writeFile } from 'node:fs/promises';
+// Real UI + deployed backend. Creates two temporary anonymous phone identities.
+// No paid Bright Data import is initiated; source association/removal is verified.
+const base = process.env.MOBILE_TEST_URL || 'http://127.0.0.1:8084';
+await mkdir('work', {recursive:true});
+const browser = await chromium.launch({channel:'chrome',headless:true});
+const opts = {viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'};
+const a = await (await browser.newContext(opts)).newPage();
+const b = await (await browser.newContext(opts)).newPage();
+const errors=[], checks=[];
+for (const p of [a,b]) { p.setDefaultTimeout(45000); p.on('pageerror', e=>errors.push(e.message)); }
+async function profile(p,name) {
+  await p.goto(base); await p.getByRole('tab',{name:'Network',exact:true}).click();
+  await p.getByLabel('YOUR NAME',{exact:true}).fill(name);
+  await p.getByLabel('WHAT YOU DO',{exact:true}).fill('Building AI developer tools');
+  await p.getByLabel('WHAT BRINGS YOU HERE',{exact:true}).fill('Learn about AI agents and meet collaborators');
+  await p.getByRole('checkbox',{name:'Session interest AI & agents',exact:true}).click();
+  await p.getByRole('checkbox',{name:'Network area AI & agents',exact:true}).click();
+  await p.getByRole('button',{name:'Save my profile',exact:true}).click();
+  await p.getByText(name,{exact:true}).waitFor();
+  await p.getByRole('button',{name:'More connection options',exact:true}).click();
+}
+async function approveCapture(p, conversation=false) {
+  await p.getByLabel('Review capture summary',{exact:true}).waitFor({timeout:200000});
+  const manual = await p.getByText('No AI draft is available. Write and review your own summary below.',{exact:true}).isVisible();
+  await p.getByLabel('Review capture summary',{exact:true}).fill('We discussed AI agents and useful developer tools. Follow up about collaborating on a small prototype.');
+  const topic=p.getByRole('checkbox',{name:'Capture topic AI & agents',exact:true});
+  if (await topic.getAttribute('aria-checked') !== 'true') await topic.click();
+  await p.getByLabel('Review capture takeaways',{exact:true}).fill('Start with a small useful prototype');
+  await p.getByLabel('Review capture actions',{exact:true}).fill('Reconnect after the conference');
+  await p.screenshot({path:`work/phase4-${conversation?'conversation':'goal'}-review.png`});
+  await p.getByRole('button',{name:conversation?'Approve & ask my connection to review':'Approve this private capture',exact:true}).click();
+  await p.getByText('Reviewed & approved by you',{exact:true}).waitFor();
+  checks.push(`${conversation?'Conversation':'Goal'} capture ${manual?'truthful manual fallback':'AI draft'} edited and explicitly approved`);
+  await p.getByRole('button',{name:'Close capture',exact:true}).click();
+}
+try {
+  await profile(a,'Avery Capture Check'); await profile(b,'Jordan Capture Check');
+  await a.getByRole('button',{name:'Create my invite code',exact:true}).click();
+  const codeNode=a.getByText(/^[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{8}$/); await codeNode.waitFor(); const code=(await codeNode.innerText()).trim();
+  assert.equal(await a.getByTestId('connection-invite-qr').locator('svg').count(),1);
+  await a.getByTestId('connection-invite-qr').scrollIntoViewIfNeeded(); await a.screenshot({path:'work/phase4-invite-qr.png'});
+  await b.getByRole('button',{name:'Scan an invite QR',exact:true}).click();
+  assert.equal(await b.locator('video').count(),0);
+  await b.getByLabel('Paste invite QR link',{exact:true}).fill('https://example.com/unsafe');
+  await b.getByRole('button',{name:'Use pasted invite link',exact:true}).click();
+  await b.getByText('That isn’t a valid ConferenceOS invite. Scan an invite QR from someone’s Network screen.',{exact:true}).waitFor();
+  assert.equal(b.url(),`${base}/`);
+  await b.getByRole('button',{name:'Scan another QR code',exact:true}).click();
+  await b.getByLabel('Paste invite QR link',{exact:true}).fill(`conferenceos://connect?code=${code}`);
+  await b.screenshot({path:'work/phase4-scan.png'});
+  await b.getByRole('button',{name:'Use pasted invite link',exact:true}).click();
+  assert.equal(await b.getByLabel('Connection invite code',{exact:true}).inputValue(),code);
+  await b.getByLabel('Send connection request',{exact:true}).click();
+  await b.getByText('Waiting for their approval',{exact:true}).waitFor();
+  await a.getByRole('button',{name:'Accept',exact:true}).click();
+  checks.push('QR generated; camera permission gated; unsafe payload rejected without navigation; strict QR link filled code and request required acceptance');
+  await a.getByRole('button',{name:'Open connection with Jordan Capture Check',exact:true}).click();
+  await a.getByLabel('Public profile URL',{exact:true}).fill('https://www.linkedin.com/in/jordan-capture-check');
+  assert.equal(await a.getByRole('button',{name:'Add public profile source',exact:true}).isEnabled(),false);
+  await a.getByRole('checkbox',{name:'Confirm public profile association',exact:true}).click();
+  await a.getByRole('button',{name:'Add public profile source',exact:true}).click();
+  await a.getByText('LinkedIn · idle',{exact:true}).waitFor();
+  await a.getByText(/0 imported posts.*association unverified/).waitFor();
+  await a.getByRole('button',{name:'Import public linkedin posts',exact:true}).scrollIntoViewIfNeeded(); await a.screenshot({path:'work/phase4-public-source.png'});
+  await a.getByRole('button',{name:'Remove linkedin source',exact:true}).click();
+  await a.getByText('LinkedIn · idle',{exact:true}).waitFor({state:'hidden'});
+  checks.push('LinkedIn public URL association requires confirmation, visibly unverified, no OAuth; remove retracts source (paid import not initiated)');
+  await a.getByRole('button',{name:'Capture conversation with audio, photos or notes',exact:true}).click();
+  assert.equal(await a.getByRole('button',{name:'Record up to 90 seconds',exact:true}).isEnabled(),false);
+  assert.equal(await a.getByRole('button',{name:'Take photo',exact:true}).isEnabled(),false);
+  await a.getByLabel('Capture notes',{exact:true}).fill('Jordan and I discussed AI agents and building useful developer tools. We want to follow up on a small prototype.');
+  assert.equal(await a.getByRole('button',{name:'Create a draft for my review',exact:true}).isEnabled(),false);
+  await a.getByRole('checkbox',{name:'Confirm capture and AI processing consent',exact:true}).click();
+  await a.screenshot({path:'work/phase4-conversation-capture.png'});
+  await a.getByRole('button',{name:'Create a draft for my review',exact:true}).click();
+  await approveCapture(a,true);
+  await b.getByRole('button',{name:'Open connection with Avery Capture Check',exact:true}).click();
+  await b.getByRole('button',{name:'Approve note',exact:true}).waitFor();
+  assert.equal(await b.getByText('BOTH APPROVED',{exact:true}).count(),0);
+  await b.getByRole('button',{name:'Approve note',exact:true}).click();
+  await b.getByText('BOTH APPROVED',{exact:true}).waitFor();
+  checks.push('Capture permission gates media/submission; reviewed conversation still requires separate peer memory approval');
+  await a.getByRole('button',{name:'Shape my conference goal',exact:true}).click();
+  await a.waitForTimeout(2100); // Respect the server's two-second capture creation throttle.
+  assert.match(await a.getByLabel('Capture notes',{exact:true}).inputValue(),/AI agents/);
+  assert.equal(await a.getByRole('button',{name:'Record up to 90 seconds',exact:true}).count(),0);
+  await a.getByRole('checkbox',{name:'Confirm capture and AI processing consent',exact:true}).click();
+  await a.getByRole('button',{name:'Create a draft for my review',exact:true}).click();
+  await approveCapture(a);
+  await a.getByRole('button',{name:'Review capture Conversation with Jordan Capture Check',exact:true}).click();
+  await a.getByRole('button',{name:'Remove this capture',exact:true}).click();
+  await a.getByRole('button',{name:'Confirm remove capture & raw media',exact:true}).click();
+  await b.getByText('BOTH APPROVED',{exact:true}).waitFor({state:'hidden'});
+  checks.push('Goal starts from profile notes and is notes-only; removing capture revokes attached shared memory');
+  await a.getByRole('tab',{name:'Discover',exact:true}).click();
+  await a.getByRole('button',{name:/^Open session /}).first().click();
+  await a.getByRole('button',{name:'Capture this session',exact:true}).click();
+  await a.waitForTimeout(2100);
+  await a.getByLabel('Capture notes',{exact:true}).fill('This session helped me understand useful AI developer tools. I want to explore a small prototype.');
+  await a.getByRole('checkbox',{name:'Confirm capture and AI processing consent',exact:true}).click();
+  await a.getByRole('button',{name:'Create a draft for my review',exact:true}).click();
+  await a.getByLabel('Review capture summary',{exact:true}).waitFor({timeout:200000});
+  assert.equal(await a.getByRole('checkbox',{name:'I attended this session',exact:true}).getAttribute('aria-checked'),'false');
+  await a.getByRole('checkbox',{name:'I attended this session',exact:true}).click();
+  const sessionTopic=a.getByRole('checkbox',{name:'Capture topic AI & agents',exact:true});
+  if(await sessionTopic.getAttribute('aria-checked')!=='true') await sessionTopic.click();
+  await a.screenshot({path:'work/phase4-session-review.png'});
+  await a.getByRole('button',{name:'Approve this private capture',exact:true}).click();
+  await a.getByText('Reviewed & approved by you',{exact:true}).waitFor();
+  assert.equal(await a.getByRole('checkbox',{name:'I attended this session',exact:true}).getAttribute('aria-checked'),'true');
+  checks.push('Official session capture opens from Discover; attendance defaults false and is explicitly self-reported before approval');
+  assert.deepEqual(errors,[]);
+  await writeFile('work/mobile-phase4-ui-verification.json',JSON.stringify({checkedAt:new Date().toISOString(),checks,errors,limitations:['Real camera scanning, microphone recording and photo picker require physical Expo Go verification; browser test uses pasted exact QR payload','Paid Bright Data refresh not initiated by this UI smoke']},null,2));
+  console.log(JSON.stringify({checks,errors},null,2));
+} catch(e) {
+  await a.screenshot({path:'work/phase4-a-failure.png'}); await b.screenshot({path:'work/phase4-b-failure.png'});
+  console.log(JSON.stringify({checks,errors,phoneA:(await a.locator('body').innerText()).slice(-10000),phoneB:(await b.locator('body').innerText()).slice(-7000)},null,2)); throw e;
+} finally { await browser.close(); }

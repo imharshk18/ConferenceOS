@@ -1,0 +1,40 @@
+{
+  "name": "@conferenceos/mobile",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start --port 8081",
+    "web": "expo start --web --port 8081",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "check": "tsc --noEmit",
+    "test:phase3": "node scripts/phase3-smoke.mjs",
+    "test:phase4": "node scripts/phase4-smoke.mjs",
+    "test:phase5": "node scripts/phase5-smoke.mjs",
+    "test:media": "node scripts/media-smoke.mjs",
+    "test:invite": "node --test scripts/invite-code.test.mjs"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "expo": "~58.0.19",
+    "expo-audio": "~58.0.10",
+    "expo-camera": "~58.0.12",
+    "expo-font": "~58.0.0",
+    "expo-image-picker": "~58.0.10",
+    "expo-linear-gradient": "~58.0.0",
+    "expo-linking": "~58.0.14",
+    "expo-status-bar": "~58.0.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-qrcode-svg": "^6.3.27",
+    "react-native-safe-area-context": "~5.10.1",
+    "react-native-svg": "15.16.0",
+    "react-native-web": "^0.21.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2"
+  }
+}

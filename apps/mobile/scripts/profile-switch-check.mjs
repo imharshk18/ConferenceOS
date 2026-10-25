@@ -1,0 +1,33 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+page.setDefaultTimeout(20000);
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try {
+ await page.goto('http://localhost:8081');
+ await page.getByRole('button',{name:'Try Harsh’s coCreatr demo',exact:true}).click();
+ await page.getByRole('button',{name:'Enter my world',exact:true}).click();
+ await page.getByLabel('Open your profile and settings',{exact:true}).click();
+ const originalKeys=await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.includes('__convexAuthJWT')).sort());
+ await page.getByRole('button',{name:'Start fresh demo profile',exact:true}).click();
+ await page.getByRole('button',{name:'Call me',exact:true}).waitFor();
+ assert.equal(await page.getByLabel('Onboarding phone number').inputValue(),'');
+ assert.equal(await page.getByRole('button',{name:'Call me',exact:true}).isDisabled(),true);
+ const slot=await page.evaluate(()=>localStorage.getItem('conferenceos-active-demo-profile-v1'));
+ assert.match(slot,/^demo[0-9]+$/);
+ await page.reload();
+ await page.getByRole('button',{name:'Call me',exact:true}).waitFor();
+ assert.equal(await page.evaluate(()=>localStorage.getItem('conferenceos-active-demo-profile-v1')),slot);
+ await page.getByRole('button',{name:'Explore first',exact:true}).click();
+ await page.getByLabel('Open your profile and settings',{exact:true}).click();
+ await page.getByRole('button',{name:'Return to original profile',exact:true}).click();
+ await page.getByRole('tab',{name:'Network',exact:true}).click();
+ await page.getByRole('button',{name:'Voice profile',exact:true}).waitFor();
+ assert.equal(await page.getByRole('button',{name:'Call me',exact:true}).count(),0);
+ assert.equal(await page.evaluate(()=>localStorage.getItem('conferenceos-active-demo-profile-v1')),'original');
+ const keys=await page.evaluate(()=>Object.keys(localStorage));
+ assert.ok(originalKeys.every(key=>keys.includes(key)));
+ assert.deepEqual(errors,[]);
+ console.log('PASS: separate fresh profile, empty phone, explicit consent required, reload persistence, original profile restored, zero JS errors. No call placed.');
+}catch(error){console.log(JSON.stringify({errors,screen:(await page.locator('body').innerText()).slice(-5000)}));throw error;}finally{await browser.close();}

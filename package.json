@@ -1,0 +1,44 @@
+{
+  "name": "conferenceos",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @conferenceos/web",
+    "mobile": "npm run start -w @conferenceos/mobile",
+    "mobile:web": "npm run web -w @conferenceos/mobile",
+    "backend": "convex dev",
+    "build": "npm run build -w @conferenceos/web",
+    "check": "tsc --noEmit",
+    "graph:check": "tsx scripts/graph-check.ts",
+    "test": "vitest run",
+    "test:cloud": "tsx scripts/phase2-cloud-check.ts",
+    "test:ui": "node scripts/phase2-ui-check.mjs",
+    "auth:check": "tsx scripts/auth-check.ts",
+    "test:phase3:cloud": "tsx scripts/phase3-cloud-check.ts",
+    "test:phase3:desktop": "node scripts/phase3-desktop-check.mjs",
+    "test:phase3:mobile": "npm run test:phase3 -w @conferenceos/mobile",
+    "test:phase4:cloud": "node --import tsx scripts/phase4-cloud-check.ts",
+    "test:phase4:mobile": "npm run test:phase4 -w @conferenceos/mobile",
+    "test:phase5:desktop": "node scripts/phase5-desktop-check.mjs",
+    "test:phase5:mobile": "npm run test:phase5 -w @conferenceos/mobile",
+    "test:analysis": "node --import tsx scripts/phase4-cloud-check.ts --ai-only"
+  },
+  "dependencies": {
+    "@auth/core": "^0.41.3",
+    "@convex-dev/auth": "^0.0.96",
+    "convex": "^1.32.0",
+    "dotenv": "^17.2.3",
+    "falkordb": "^6.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "convex-test": "^0.0.65",
+    "playwright": "^1.56.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "researchedAt": "2026-10-24",
+  "purpose": "Real public external sources for a simulated networking and follow-up demonstration. Not registered ConferenceOS users or real connections.",
+  "sources": [
+    {
+      "id": "nick-taylor",
+      "name": "Nick Taylor",
+      "linkedin": "https://www.linkedin.com/in/nickytonline/",
+      "x": "https://x.com/nickytonline",
+      "identityEvidence": "https://www.nickyt.co/socials/",
+      "conferenceEvidence": "https://www.nickyt.co/",
+      "conferenceStatus": "listed-2026-speaker-not-checked-in",
+      "bestFor": ["MCP authorization", "agent security", "technical resources"],
+      "post": "https://www.linkedin.com/posts/nickytonline_mcp-ai-zerotrust-activity-7492936294847684609-8bK8"
+    },
+    {
+      "id": "kent-c-dodds",
+      "name": "Kent C. Dodds",
+      "linkedin": "https://www.linkedin.com/in/kentcdodds/",
+      "x": "https://x.com/kentcdodds",
+      "identityEvidence": "https://kentcdodds.com/info",
+      "conferenceEvidence": "https://githubuniverse.com/",
+      "conferenceStatus": "listed-2026-speaker-not-checked-in",
+      "bestFor": ["AI agents", "MCP", "developer tools", "open source"]
+    },
+    {
+      "id": "cassidy-williams",
+      "name": "Cassidy Williams",
+      "linkedin": "https://www.linkedin.com/in/cassidoo/",
+      "x": "https://x.com/cassidoo",
+      "identityEvidence": "https://cassidoo.co/socials/",
+      "conferenceEvidence": "https://cassidoo.co/newsletter/2026-10-11/",
+      "conferenceStatus": "listed-2026-speaker-not-checked-in",
+      "bestFor": ["developer experience", "community", "conference previews", "web development"]
+    },
+    {
+      "id": "andrea-griffiths",
+      "name": "Andrea Griffiths",
+      "linkedin": "https://www.linkedin.com/in/acolombiadev/",
+      "x": "https://x.com/acolombiadev",
+      "identityEvidence": "https://sessionize.com/acolombiadev/",
+      "conferenceEvidence": "https://reg.githubuniverse.com/flow/github/universe26/attendee-portal/page/sessioncatalog",
+      "conferenceStatus": "listed-2026-speaker-not-checked-in",
+      "bestFor": ["GitHub Copilot", "agent workflows", "open source", "community"]
+    },
+    {
+      "id": "sagar-shah",
+      "name": "Sagar Shah",
+      "linkedin": "https://www.linkedin.com/in/sagarshahuk/",
+      "x": "https://x.com/sa64r",
+      "identityEvidence": "https://www.linkedin.com/posts/sagarshahuk_one-tweet-10000-impressions-50-applications-activity-7481228151180840961-43Bt",
+      "conferenceEvidence": null,
+      "conferenceStatus": "attendance-unverified-external-source",
+      "bestFor": ["AI startups", "founding engineer roles", "public hiring leads"],
+      "post": "https://x.com/sa64r/status/2075134826634486039",
+      "caveat": "A public hiring post is a lead, not a verified currently open vacancy. Do not imply conference attendance."
+    }
+  ],
+  "smokeInputs": [
+    {
+      "id": "nick-linkedin-announcement",
+      "sourceId": "nick-taylor",
+      "platform": "linkedin",
+      "datasetId": "gd_lyy3tktm25m4avu764",
+      "url": "https://www.linkedin.com/posts/nickytonline_mcp-ai-zerotrust-activity-7492936294847684609-8bK8",
+      "purpose": "Public speaker announcement relevant to a synthetic conversation about securing MCP agents. Not evidence of already attending."
+    },
+    {
+      "id": "sagar-x-hiring-lead",
+      "sourceId": "sagar-shah",
+      "platform": "x",
+      "datasetId": "gd_lwxkxvnf1cynvib9co",
+      "url": "https://x.com/sa64r/status/2075134826634486039",
+      "purpose": "Public hiring lead relevant to a synthetic discussion about AI startup roles. Current vacancy availability is unverified."
+    }
+  ]
+}

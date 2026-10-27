@@ -15,6 +15,7 @@ import type * as captureJobs from "../captureJobs.js";
 import type * as captures from "../captures.js";
 import type * as demo from "../demo.js";
 import type * as discover from "../discover.js";
+import type * as groups from "../groups.js";
 import type * as graph from "../graph.js";
 import type * as http from "../http.js";
 import type * as intelligence from "../intelligence.js";
@@ -55,6 +56,7 @@ declare const fullApi: ApiFromModules<{
   captures: typeof captures;
   demo: typeof demo;
   discover: typeof discover;
+  groups: typeof groups;
   graph: typeof graph;
   http: typeof http;
   intelligence: typeof intelligence;

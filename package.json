@@ -14,6 +14,7 @@
     "check": "tsc --noEmit",
     "graph:check": "tsx scripts/graph-check.ts",
     "test": "vitest run",
+    "test:groups:ui": "node scripts/groups-ui-check.mjs",
     "test:cloud": "tsx scripts/phase2-cloud-check.ts",
     "test:ui": "node scripts/phase2-ui-check.mjs",
     "auth:check": "tsx scripts/auth-check.ts",

@@ -1,0 +1,32 @@
+import {build} from 'esbuild';
+import {chromium} from 'playwright';
+import {createServer} from 'node:http';
+import {readFile,mkdir} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import assert from 'node:assert/strict';
+const root=resolve('tests/fixtures/groups-ui');
+const output=resolve('work/groups-ui');
+await mkdir(output,{recursive:true});
+await build({entryPoints:[`${root}/main.tsx`],outfile:`${output}/bundle.js`,bundle:true,format:'iife',platform:'browser',jsx:'automatic',alias:{'expo-font':`${root}/font.ts`,'react-native':'react-native-web','convex/react':`${root}/mock.tsx`},resolveExtensions:['.web.tsx','.web.ts','.web.js','.tsx','.ts','.js','.json'],loader:{'.js':'jsx','.ttf':'dataurl','.png':'dataurl'},define:{'process.env.NODE_ENV':'"development"','__DEV__':'true'}});
+const server=createServer(async(req,res)=>{if(req.url==='/bundle.js'){res.setHeader('Content-Type','application/javascript');res.end(await readFile(`${output}/bundle.js`));}else{res.setHeader('Content-Type','text/html');res.end('<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>html,body,#root{margin:0;min-height:100%;background:#0e1720}#root{padding:20px;box-sizing:border-box}</style></head><body><div id="root"></div><script src="/bundle.js"></script></body></html>');}}).listen(8096,'127.0.0.1');
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try{
+ await page.goto('http://127.0.0.1:8096');
+ await page.getByRole('button',{name:'Open Conference Groups',exact:true}).click();
+ await page.getByRole('button',{name:'Join Consumer builders',exact:true}).waitFor();
+ await page.screenshot({path:`${output}/suggested.png`});
+ await page.getByRole('button',{name:'Join Consumer builders',exact:true}).click();
+ await page.getByRole('button',{name:'Common Ground',exact:true}).waitFor();
+ await page.getByText('TECHNICAL / PROFESSIONAL',{exact:true}).waitFor();await page.getByText('CASUAL / OUTSIDE WORK',{exact:true}).waitFor();
+ await page.screenshot({path:`${output}/common-ground.png`});
+ await page.getByLabel('Group message',{exact:true}).fill('Meet after the workshop');await page.getByRole('button',{name:'Send message',exact:true}).click();await page.getByText('Meet after the workshop',{exact:true}).waitFor();
+ await page.getByRole('tab',{name:'Session coverage',exact:true}).click();
+ await page.getByRole('button',{name:'Volunteer to cover',exact:true}).first().click();await page.getByText('Maya · covering',{exact:true}).waitFor();
+ await page.getByRole('button',{name:'Share takeaways for this session',exact:true}).first().click();
+ await page.getByLabel('Session takeaways or resource links',{exact:true}).fill('Shared learning survives the conference.');await page.getByRole('button',{name:'Share takeaways',exact:true}).click();await page.getByText('Shared learning survives the conference.',{exact:true}).waitFor();
+ await page.getByRole('tab',{name:'Members',exact:true}).click();await page.getByRole('button',{name:'Mute group',exact:true}).click();await page.getByRole('button',{name:'Unmute group',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Back to groups',exact:true}).click();await page.getByRole('tab',{name:'My Groups',exact:true}).click();await page.getByRole('button',{name:'Open Consumer builders',exact:true}).click();await page.getByText('Meet after the workshop',{exact:true}).waitFor();
+ await page.getByRole('tab',{name:'Members',exact:true}).click();await page.getByRole('button',{name:'Leave group',exact:true}).click();await page.getByRole('button',{name:'Confirm leave group',exact:true}).click();await page.getByRole('tab',{name:'My Groups',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Open Consumer builders',exact:true}).count(),0);
+ assert.deepEqual(errors,[]);console.log('PASS: mobile UI fixture checks: discovery, join, Common Ground, chat, coverage, notes, mute, reopen, leave. Backend persistence/security is tested separately with convex-test.');
+}finally{await browser.close();server.close();}

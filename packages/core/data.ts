@@ -1,5 +1,7 @@
 import {officialEvent,officialTalks,officialSpeakers,officialRooms,officialProgramSource} from './officialProgram';
 import {profileSources} from './profileSources';
+export const CONFERENCE_ID='universe2026';
+export const CONFERENCE_END=Date.parse('2026-10-30T07:00:00Z');
 export const event=officialEvent;
 export const programSource=officialProgramSource;
 export const topics=[

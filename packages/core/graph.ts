@@ -1,7 +1,8 @@
 import { FalkorDB } from 'falkordb';
 import { talks, topics, speakers, rooms, people, pathCypher } from './data';
 import {publicNodeMetadata,demoNodeMetadata,isPublicProof,legacyProof,validTopicIds,type GraphProof,type SessionRecommendation,type PersonRecommendation} from './intelligence';
-export const EVENT_ID='universe2026';
+export { CONFERENCE_ID as EVENT_ID } from './data';
+import { CONFERENCE_ID as EVENT_ID } from './data';
 
 export async function withGraph<T>(fn:(graph:ReturnType<FalkorDB['selectGraph']>)=>Promise<T>):Promise<T> {
   const url = process.env.FALKORDB_URL?.replace('falkors\\://','falkors://');

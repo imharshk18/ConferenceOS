@@ -14,8 +14,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Svg, { Circle, Path } from "react-native-svg";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { CONFERENCE_ID } from '../../packages/core/data';
+import { friendlyError } from './friendlyError';
 import { NETWORK_AREAS } from "../../packages/core/network";
 import { useReducedMotion } from "./useReducedMotion";
 
@@ -177,6 +179,8 @@ export function WrappedLauncher({
   connected: boolean;
   onNetwork?: () => void;
 }) {
+  const completeConference = useMutation(api.groups.completeConference);
+  const [ending, setEnding] = useState(false), [endError, setEndError] = useState('');
   const [open, setOpen] = useState(false),
     [actual, setActual] = useState(false),
     [chapter, setChapter] = useState(0),
@@ -291,6 +295,20 @@ export function WrappedLauncher({
           />
         </View>
       </Pressable>
+      {authenticated && <View style={{marginTop:12}}>
+        <Pressable accessibilityRole="button" accessibilityLabel="End conference and open Wrapped" disabled={ending || !connected} onPress={async()=>{
+          setEnding(true); setEndError('');
+          try {
+            await completeConference({conferenceId:CONFERENCE_ID});
+            setActual(true); setChapter(0); setPaused(reduced); setOpen(true);
+          } catch(e) { setEndError(friendlyError(e,'Couldn’t end the conference. Reconnect and try again.')); }
+          finally { setEnding(false); }
+        }} style={{paddingVertical:14,opacity:ending || !connected ? 0.4 : 1}}>
+          <Text style={{color:'#bce9d3',fontSize:13}}>End conference → see my Wrapped</Text>
+        </Pressable>
+        <Text style={{color:'#8fa4ad',fontSize:11,lineHeight:18}}>Groups move to Past Conferences. Your conversations and shared notes stay open.</Text>
+        {!!endError&&<Text accessibilityRole="alert" style={{color:'#efb7a8',fontSize:12,marginTop:8}}>{endError}</Text>}
+      </View>}
       {open && (
         <Modal
           animationType={reduced ? "none" : "fade"}

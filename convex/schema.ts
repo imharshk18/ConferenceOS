@@ -15,6 +15,23 @@ import { networkGraph, sharedContextGraph } from "./networkValidators";
 import { onboardingProfile, onboardingStatus } from './onboardingValidators';
 export default defineSchema({
   ...authTables,
+  // Conference identifiers reference the existing official program, never a duplicate event catalog.
+  conferenceParticipation: defineTable({userId:v.id('users'),conferenceId:v.string(),completed:v.boolean()})
+    .index('by_user_conference',['userId','conferenceId']),
+  conferenceGroups: defineTable({conferenceId:v.string(),name:v.string(),ownerId:v.id('users'),capacity:v.number(),createdAt:v.number()})
+    .index('by_conference',['conferenceId']).index('by_owner',['ownerId']),
+  groupMembers: defineTable({groupId:v.id('conferenceGroups'),userId:v.id('users'),active:v.boolean(),muted:v.boolean(),joinedAt:v.number()})
+    .index('by_group',['groupId']).index('by_user',['userId']).index('by_group_user',['groupId','userId']),
+  groupMessages: defineTable({groupId:v.id('conferenceGroups'),authorId:v.id('users'),body:v.string(),requestId:v.string(),createdAt:v.number()})
+    .index('by_group',['groupId']).index('by_request',['groupId','authorId','requestId']),
+  groupCoverage: defineTable({groupId:v.id('conferenceGroups'),userId:v.id('users'),talkId:v.string(),covering:v.boolean()})
+    .index('by_group',['groupId']).index('by_group_user_talk',['groupId','userId','talkId']),
+  groupNotes: defineTable({groupId:v.id('conferenceGroups'),authorId:v.id('users'),talkId:v.string(),body:v.string(),requestId:v.string(),createdAt:v.number()})
+    .index('by_group',['groupId']).index('by_request',['groupId','authorId','requestId']),
+  groupBlocks: defineTable({userId:v.id('users'),blockedId:v.id('users')})
+    .index('by_user',['userId']).index('by_blocked',['blockedId']).index('by_pair',['userId','blockedId']),
+  groupReports: defineTable({groupId:v.id('conferenceGroups'),reporterId:v.id('users'),reportedId:v.id('users'),reason:v.string(),createdAt:v.number()})
+    .index('by_reporter',['reporterId']),
   preferences: defineTable({
     userId: v.id("users"),
     bookmarks: v.array(v.string()),
@@ -61,6 +78,9 @@ export default defineSchema({
     skillIds: v.array(v.string()),
     networkAreas: v.optional(v.array(v.string())),
     color: v.string(),
+    groupSharing: v.optional(v.boolean()),
+    shareGroupSessions: v.optional(v.boolean()),
+    casualInterests: v.optional(v.array(v.string())),
     context: v.optional(v.string()),
     contextRevision: v.optional(v.number()),
     source: v.optional(v.union(v.literal('manual'),v.literal('bland'),v.literal('demo'))),
